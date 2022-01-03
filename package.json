@@ -1,19 +1,24 @@
 {
-  "name": "construktor",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/EvgenijBaltais/site_construktor_js.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/EvgenijBaltais/site_construktor_js/issues"
-  },
-  "homepage": "https://github.com/EvgenijBaltais/site_construktor_js#readme"
+    "name": "construktor",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/index.js",
+    "scripts": {
+        "serve": "parcel ./src/index.html -p 4200 --open",
+        "build": "parcel build ./src/index.html --no-source-maps"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/EvgenijBaltais/site_construktor_js.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/EvgenijBaltais/site_construktor_js/issues"
+    },
+    "homepage": "https://github.com/EvgenijBaltais/site_construktor_js#readme",
+    "dependencies": {},
+    "devDependencies": {
+        "parcel": "^2.0.1"
+    }
 }

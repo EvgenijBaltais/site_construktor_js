@@ -1,5 +1,5 @@
 import image from './assets/image.png'
-import {TitleBlock, ImageBlock, ColumnsBlock, TextBlock} from'./classes/blocks'
+import {TitleBlock, ImageBlock, ColumnsBlock, TextBlock} from './classes/blocks'
 
 const text = `Крутые видеоуроки по Javascript тут`
 

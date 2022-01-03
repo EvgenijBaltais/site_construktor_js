@@ -460,39 +460,13 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"hD4hw":[function(require,module,exports) {
 var _model = require("./model");
-var _templates = require("./templates");
 var _mainCss = require("./styles/main.css");
 const $site = document.querySelector('#site');
 _model.model.forEach((block)=>{
-    const toHtml = _templates.templates[block.type];
-    if (toHtml) $site.insertAdjacentHTML('beforeend', toHtml(block));
+    $site.insertAdjacentHTML('beforeend', block.toHTML());
 });
-function title(block) {
-    return `<div class="row">
-				<div class="col-sm">
-					<h1>${block.value}</h1>
-				</div>
-			</div>`;
-}
-function text(block) {
-    return `<div class="row">
-				<div class="col-sm">
-					<p>${block.value}</p>
-				</div>
-			</div>`;
-}
-function columns(block) {
-    const html = block.value.map((item)=>`<div class="col-sm"><p>${item}</p></div>`
-    );
-    return `<div class="row">${html.join('')}</div>`;
-}
-function image(block) {
-    return `<div class = "row">
-        <img src = "${block.value}">
-    </div>`;
-}
 
-},{"./model":"bpzyw","./templates":"4nrJv","./styles/main.css":"jf22y"}],"bpzyw":[function(require,module,exports) {
+},{"./model":"bpzyw","./styles/main.css":"jf22y"}],"bpzyw":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "model", ()=>model
@@ -625,9 +599,9 @@ parcelHelpers.export(exports, "ColumnsBlock", ()=>ColumnsBlock
 );
 parcelHelpers.export(exports, "TextBlock", ()=>TextBlock
 );
+var _utils = require("../utils");
 class Block {
-    constructor(type, value, options){
-        this.type = type;
+    constructor(value, options){
         this.value = value;
         this.options = options;
     }
@@ -637,69 +611,41 @@ class Block {
 }
 class TitleBlock extends Block {
     constructor(value1, options1){
-        super('title', value1, options1);
+        super(value1, options1);
     }
     toHTML() {
         const { tag ='h1' , styles  } = this.options;
-        return row(col(`<${tag}>${this.value}</${tag}>`), css(styles));
+        return _utils.row(_utils.col(`<${tag}>${this.value}</${tag}>`), _utils.css(styles));
     }
 }
 class ImageBlock extends Block {
     constructor(value2, options2){
-        super('image', value2, options2);
+        super(value2, options2);
     }
     toHTML() {
         const { imageStyles: is , alt ='' , styles  } = this.options;
-        return row(`<img src = "${this.value}" alt = "${alt}" style = "${css(is)}">`, css(styles));
+        return _utils.row(`<img src = "${this.value}" alt = "${alt}" style = "${_utils.css(is)}">`, _utils.css(styles));
     }
 }
 class ColumnsBlock extends Block {
     constructor(value3, options3){
-        super('columns', value3, options3);
+        super(value3, options3);
     }
     toHTML() {
-        const html = this.value.map(col).join('');
-        return row(html, css(this.options.styles));
+        const html = this.value.map(_utils.col).join('');
+        return _utils.row(html, _utils.css(this.options.styles));
     }
 }
 class TextBlock extends Block {
     constructor(value4, options4){
-        super('text', value4, options4);
+        super(value4, options4);
     }
     toHTML() {
-        return row(col(`<p>${this.value}</p>`), css(this.options.styles));
+        return _utils.row(_utils.col(`<p>${this.value}</p>`), _utils.css(this.options.styles));
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"4nrJv":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "templates", ()=>templates
-);
-var _utils = require("./utils");
-function title(block) {
-    const { tag ='h1' , styles  } = block.options;
-    return _utils.row(_utils.col(`<${tag}>${block.value}</${tag}>`), _utils.css(styles));
-}
-function text(block) {
-    return _utils.row(_utils.col(`<p>${block.value}</p>`), _utils.css(block.options.styles));
-}
-function columns(block) {
-    const html = block.value.map(_utils.col).join('');
-    return _utils.row(html, _utils.css(block.options.styles));
-}
-function image(block) {
-    const { imageStyles: is , alt ='' , styles  } = block.options;
-    return _utils.row(`<img src = "${block.value}" alt = "${alt}" style = "${_utils.css(is)}">`, _utils.css(styles));
-}
-const templates = {
-    title,
-    text,
-    image,
-    columns
-};
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","./utils":"lfIdr"}],"lfIdr":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","../utils":"lfIdr"}],"lfIdr":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "row", ()=>row

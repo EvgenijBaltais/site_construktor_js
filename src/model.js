@@ -43,5 +43,5 @@ export const model = [
             padding: '1rem',
             'font-weight': 'bold'
           }
-    }),
+    })
 ]

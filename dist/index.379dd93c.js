@@ -461,12 +461,10 @@ function hmrAcceptRun(bundle, id) {
 },{}],"hD4hw":[function(require,module,exports) {
 var _model = require("./model");
 var _mainCss = require("./styles/main.css");
-const $site = document.querySelector('#site');
-_model.model.forEach((block)=>{
-    $site.insertAdjacentHTML('beforeend', block.toHTML());
-});
+var _app = require("./classes/app");
+new _app.App(_model.model).init();
 
-},{"./model":"bpzyw","./styles/main.css":"jf22y"}],"bpzyw":[function(require,module,exports) {
+},{"./model":"bpzyw","./styles/main.css":"jf22y","./classes/app":"jMRWM"}],"bpzyw":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "model", ()=>model
@@ -515,40 +513,10 @@ const model = [
             padding: '1rem',
             'font-weight': 'bold'
         }
-    }), 
+    })
 ];
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","./assets/image.png":"FW5Cw","./classes/blocks":"esWLO"}],"ciiiV":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, '__esModule', {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === 'default' || key === '__esModule' || dest.hasOwnProperty(key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"FW5Cw":[function(require,module,exports) {
+},{"./assets/image.png":"FW5Cw","./classes/blocks":"esWLO","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"FW5Cw":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('hjDlF') + "image.a88b1893.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"chiK4"}],"chiK4":[function(require,module,exports) {
@@ -645,7 +613,7 @@ class TextBlock extends Block {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","../utils":"lfIdr"}],"lfIdr":[function(require,module,exports) {
+},{"../utils":"lfIdr","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"lfIdr":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "row", ()=>row
@@ -653,6 +621,8 @@ parcelHelpers.export(exports, "row", ()=>row
 parcelHelpers.export(exports, "col", ()=>col
 );
 parcelHelpers.export(exports, "css", ()=>css
+);
+parcelHelpers.export(exports, "block", ()=>block
 );
 function row(content, styles = '') {
     return `<div class = "row" style = "${styles}">${content}</div>`;
@@ -662,11 +632,133 @@ function col(content) {
 }
 function css(styles = {
 }) {
+    if (typeof styles === 'string') return styles;
     const toString = (key)=>`${key}: ${styles[key]}`
     ;
     return Object.keys(styles).map(toString).join(';');
 }
+function block(type) {
+    return `
+      <form name="${type}">
+        <h5>${type}</h5>
+        <div class="form-group">
+          <input class="form-control form-control-sm" name="value" placeholder="value">
+        </div>
+        <div class="form-group">
+          <input class="form-control form-control-sm" name="styles" placeholder="styles">
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Добавить</button>
+      </form>
+      <hr />
+    `;
+}
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"jf22y":[function() {},{}]},["lBB98","hD4hw"], "hD4hw", "parcelRequirecf3b")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"ciiiV":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, '__esModule', {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === 'default' || key === '__esModule' || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"jf22y":[function() {},{}],"jMRWM":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "App", ()=>App
+);
+var _site = require("./site");
+var _sidebar = require("./sidebar");
+class App {
+    constructor(model){
+        this.model = model;
+    }
+    init() {
+        const site = new _site.Site('#site');
+        site.render(this.model);
+        const updateCallback = (newBlock)=>{
+            this.model.push(newBlock);
+            site.render(this.model);
+        };
+        new _sidebar.SideBar('#panel', updateCallback);
+    }
+}
+
+},{"./site":"2Axr6","./sidebar":"fOnlS","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"2Axr6":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Site", ()=>Site
+);
+class Site {
+    constructor(selector){
+        this.$el = document.querySelector(selector);
+    }
+    render(model) {
+        this.$el.innerHTML = '';
+        model.forEach((block)=>{
+            this.$el.insertAdjacentHTML('beforeend', block.toHTML());
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"fOnlS":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "SideBar", ()=>SideBar
+);
+var _utils = require("../utils");
+var _blocks = require("./blocks");
+class SideBar {
+    constructor(selector, updateCallback){
+        this.$el = document.querySelector(selector);
+        this.update = updateCallback;
+        this.init();
+    }
+    init() {
+        this.$el.insertAdjacentHTML('afterbegin', this.template);
+        this.$el.addEventListener('submit', this.add.bind(this));
+    }
+    get template() {
+        return [
+            _utils.block('text'),
+            _utils.block('title')
+        ].join('');
+    }
+    add(event) {
+        event.preventDefault();
+        const type = event.target.name;
+        const value = event.target.value.value;
+        const styles = event.target.styles.value;
+        const newBlock = type === 'text' ? new _blocks.TextBlock(value, {
+            styles
+        }) : new _blocks.TitleBlock(value, {
+            styles
+        });
+        this.update(newBlock);
+    }
+}
+
+},{"../utils":"lfIdr","./blocks":"esWLO","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}]},["lBB98","hD4hw"], "hD4hw", "parcelRequirecf3b")
 
 //# sourceMappingURL=index.379dd93c.js.map
